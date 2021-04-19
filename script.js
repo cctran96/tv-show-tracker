@@ -40,7 +40,7 @@ function searchResults(show) {
     let title = show.name
     let genre = `${(show.genres.length > 1)? 'Genres:' : 'Genre:'} ${(show.genres.length)? show.genres.join(', ') : 'Unavailable'}`
     let language = `Language: ${show.language}`
-    let runtime = `Runtime: ${(show.runtime)? show.runtime : 'Unavailable'} minutes`
+    let runtime = `Runtime: ${(show.runtime)? show.runtime + ' minutes' : 'Unavailable'}`
     let image = (show.image)? show.image.medium : imgNotFound
     let rating = `Rating: ${(show.rating.average)? show.rating.average : 'Unavailable'}`
 
