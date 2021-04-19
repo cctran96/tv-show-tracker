@@ -28,7 +28,6 @@ function handleSubmit(e) {
 
 // returns a new div containing a show details
 function searchResults(show) {
-    console.log(show)
     const container = document.createElement('div')
     const text = document.createElement('div')
     const img = document.createElement('img')
@@ -78,7 +77,6 @@ function showDetails(id) {
         let parser = new DOMParser()
         let summary = parser.parseFromString(details.summary, 'text/html').querySelector('p')
 
-        let comments = document.createElement('div')
         createBackButton()
 
         let castHeader = document.createElement('h2')
@@ -89,7 +87,7 @@ function showDetails(id) {
             castList.appendChild(createCastMemberCard(castMember))
         })
 
-        showInfo.append(summary, comments, castHeader, castList)
+        showInfo.append(summary, commentDetails(id), castHeader, castList)
     })
 }
 
@@ -122,8 +120,7 @@ function fetchShowDetails(id) {
 }
 
 function fetchFavorites() {
-    return fetch(localURL)
-    .then(r => r.json())
+    return fetch(localURL).then(r => r.json())
 }
 
 function pinFavorites(favorites) {
@@ -145,7 +142,7 @@ function pinFavorites(favorites) {
 function handleFavorites() {
     const obj = {
         name: this.id,
-        showId: this.classList.value,
+        showId: parseInt(this.classList.value),
     }
 
     fetchFavorites().then(shows => filterFavorites(obj, shows))
@@ -221,4 +218,48 @@ function previousSearchResult() {
     showInfo.innerHTML = ''
     fetchShowSearchResults(previousSearch)
     .then(data => data.forEach(show => showInfo.appendChild(searchResults(show.show))))
+}
+
+function fetchComments() {
+    const commentURL = 'http://localhost:3000/comments'
+    return fetch(commentURL).then(r => r.json())
+}
+
+function fetchUser() {
+    const userURL = 'http://localhost:3000/users'
+    return fetch(userURL).then(r => r.json())
+}
+
+function commentDetails(showId) {
+    const commentSection = document.createElement('div')
+    const commentHeading = document.createElement('h2')
+    const commentList = document.createElement('ul')
+    const noCommentYet = document.createElement('li')
+
+    commentHeading.innerText = 'Comments'
+    commentSection.id = 'comments'
+    noCommentYet.innerText = 'No comments yet...'
+    addCommentsToPage(commentList, showId)
+
+    commentList.appendChild(noCommentYet)
+    commentSection.append(commentHeading, commentList)
+    return commentSection
+}
+
+function addCommentsToPage(list, showId) {
+    fetchComments().then(comments => comments.forEach(comment => {
+        if (comment.showId === showId) {
+            list.innerHTML = ''
+            fetchUser().then(users => {
+                const li = document.createElement('li')
+                let userInfo = users.find(user => user.id === comment.user)
+                let img = document.createElement('img')
+                img.src = userInfo.pic
+                let p = document.createElement('p')
+                p.innerHTML = `<strong>${userInfo.name}</strong><br>${comment.comment}`
+                li.append(img, p)
+                list.appendChild(li)
+            })
+        }
+    }))
 }

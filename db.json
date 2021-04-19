@@ -2,39 +2,82 @@
   "favorites": [
     {
       "name": "Breaking Bad",
-      "showId": "169",
+      "showId": 169,
       "id": 3
     },
     {
       "name": "The Office",
-      "showId": "526",
+      "showId": 526,
       "id": 4
     },
     {
       "name": "The Haunting of Hill House",
-      "showId": "29191",
+      "showId": 29191,
       "id": 8
     },
     {
       "name": "How I Met Your Mother",
-      "showId": "171",
+      "showId": 171,
       "id": 10
     },
     {
       "name": "Lost",
-      "showId": "123",
-      "id": 14
+      "showId": 123,
+      "id": 16
     },
     {
       "name": "Friends",
-      "showId": "431",
-      "id": 15
+      "showId": 431,
+      "id": 17
     }
   ],
   "comments": [
+    {
+      "id": 1,
+      "showId": 169,
+      "user": 1,
+      "comment": "I love this show!"
+    },
+    {
+      "id": 2,
+      "showId": 431,
+      "user": 2,
+      "comment": "What a boring show..."
+    },
+    {
+      "id": 3,
+      "showId": 169,
+      "user": 3,
+      "comment": "This is a 10/10 show"
+    },
+    {
+      "id": 4,
+      "showId": 169,
+      "user": 4,
+      "comment": "I've rewatched this 10 times! Love it!"
+    }
 
   ],
   "users": [
-    
+    {
+      "id": 1,
+      "name": "chautran",
+      "pic": "https://tabarrukoffer.islamicly.com/Content/images/noimage.png"
+    },
+    {
+      "id": 2,
+      "name": "zach",
+      "pic": "https://tabarrukoffer.islamicly.com/Content/images/noimage.png"
+    },
+    {
+      "id": 3,
+      "name": "urmom69",
+      "pic": "https://tabarrukoffer.islamicly.com/Content/images/noimage.png"
+    },
+    {
+      "id": 4,
+      "name": "anonymous",
+      "pic": "https://tabarrukoffer.islamicly.com/Content/images/noimage.png"
+    }
   ]
 }
