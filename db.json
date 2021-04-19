@@ -1,0 +1,19 @@
+{
+  "Favorites": [
+    {
+      "name": "The Office",
+      "showId": "526",
+      "id": 1
+    },
+    {
+      "name": "Friends",
+      "showId": "431",
+      "id": 2
+    },
+    {
+      "name": "Breaking Bad",
+      "showId": "169",
+      "id": 3
+    }
+  ]
+}
