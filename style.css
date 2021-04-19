@@ -2,15 +2,18 @@
     position: fixed;
     width: 200px;
     height: 100%;
-    top: 57px;
+    top: 0;
     left: 0;
     background: black;
+    overflow-y: scroll;
+    z-index: -1;
 }
 
 #pin {
     margin-left: 10px;
     color: whitesmoke;
     text-align: center;
+    padding-top: 30%;
 }
 
 #topbar {
