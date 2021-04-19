@@ -19,7 +19,12 @@ function handleSubmit(e) {
 
     showInfo.innerHTML = ''
     fetchShowSearchResults(searchInput.value)
-    .then(data => data.forEach(show => showInfo.appendChild(searchResults(show.show))))
+    .then(data => {
+        let cardList = document.createElement('div')
+        cardList.classList.add('card-list')
+        data.forEach(show => cardList.appendChild(searchResults(show.show)))
+        showInfo.appendChild(cardList)
+    })
 
     e.target.reset()
 }
@@ -59,6 +64,7 @@ function searchResults(show) {
     button.id = show.name
     button.addEventListener('click', handleFavorites)
     text.append(showName, showGenre, showRating, showLanguage, showRun, button)
+
     container.append(img, text)
     
     return container
@@ -79,6 +85,7 @@ function showDetails(id) {
         castHeader.innerText = 'Cast'
 
         let castList = document.createElement('ul')
+        castList.classList.add('card-list')
         details._embedded.cast.forEach(castMember => {
             castList.appendChild(createCastMemberCard(castMember))
         })
@@ -92,6 +99,7 @@ function showDetails(id) {
 // returns a new li element containg cast member details
 function createCastMemberCard(castMember) {
     let li = document.createElement('li')
+    li.classList.add('card')
 
     let img = document.createElement('img')
     img.src = castMember.person.image.medium
