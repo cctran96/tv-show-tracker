@@ -1,4 +1,5 @@
 const localURL = 'http://localhost:3000/Favorites/'
+const imgNotFound = 'https://st3.depositphotos.com/1322515/35964/v/600/depositphotos_359648638-stock-illustration-image-available-icon.jpg'
 
 // Initialize favorites menu
 getFavorites().then(data => data.forEach(show => pinFavorites(show)))
@@ -34,22 +35,12 @@ function searchResults(show) {
     const showRun = document.createElement('h3')
     const button = document.createElement('button')
 
-    let title = 'Name: ' + show.name
-    let genre = 'Genre: ' + show.genres.toString()
-    let language = 'Language: ' + show.language
+    let title = show.name
+    let genre = `${(show.genres.length > 1)? 'Genres:' : 'Genre:'} ${show.genres.join(', ')}`
+    let language = `Language: ${show.language}`
     let runtime = 'Runtime: ' + show.runtime + ' minutes'
-    let image
-    let rating
-    if (show.image === null) {
-        image = 'https://st3.depositphotos.com/1322515/35964/v/600/depositphotos_359648638-stock-illustration-image-available-icon.jpg'
-    } else {
-        image = show.image.medium
-    }
-    if (show.rating.average === null) {
-        rating = 'Rating: N/A'
-    } else {
-        rating = 'Rating: ' + show.rating.average
-    }
+    let image = (show.image)? show.image.medium : imgNotFound
+    let rating = `Rating: ${(show.rating.average)? show.rating.average : 'Unavailable'}`
 
     container.classList = 'card'
     text.classList = 'text'
@@ -61,7 +52,7 @@ function searchResults(show) {
     showRating.innerText = rating
     showLanguage.innerText = language
     showRun.innerText = runtime
-    button.innerText = 'Pin to favorites'
+    button.innerText = 'Pin to Favorites'
     button.classList = show.id
     button.id = show.name
     button.addEventListener('click', handleFavorites)
@@ -83,7 +74,7 @@ function showDetails(id) {
         let summary = parser.parseFromString(details.summary, 'text/html').querySelector('p')
 
         let castHeader = document.createElement('h2')
-        castHeader.innerText = "Cast"
+        castHeader.innerText = 'Cast'
 
         let castList = document.createElement('ul')
         details._embedded.cast.forEach(castMember => {
