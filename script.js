@@ -40,7 +40,8 @@ function searchResults(show) {
     let title = show.name
     let genre = `${(show.genres.length > 1)? 'Genres:' : 'Genre:'} ${(show.genres.length)? show.genres.join(', ') : 'Unavailable'}`
     let language = `Language: ${show.language}`
-    let runtime = `Runtime: ${(show.runtime)? show.runtime + ' minutes' : 'Unavailable'}`
+    let runtime = `${(show.runtime)? show.runtime + ' minutes': 'Unavailable'}`
+    runtime = `Runtime: ${(show.averageRuntime)? Math.round(show.averageRuntime/10)*10 + ' minutes': runtime}`
     let image = (show.image)? show.image.medium : imgNotFound
     let rating = `Rating: ${(show.rating.average)? show.rating.average : 'Unavailable'}`
 
@@ -130,6 +131,7 @@ function pinFavorites(favorites) {
     li.innerText = favorites.name
     li.classList = favorites.showId
     li.id = favorites.id
+    li.addEventListener('click', event => showDetails(favorites.showId))
     li.appendChild(button)
     pinnedShows.appendChild(li)
 }

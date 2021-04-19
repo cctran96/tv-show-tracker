@@ -6,7 +6,6 @@
     left: 0;
     background: black;
     overflow-y: scroll;
-    z-index: -1;
 }
 
 #pin {
@@ -90,6 +89,7 @@ ul {
     text-align: center;
     border: 2px white;
     padding: 20px;
+    cursor: pointer;
 }
 
 #tv-shows li:hover {
