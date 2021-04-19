@@ -19,6 +19,41 @@
       "name": "Friends",
       "showId": "431",
       "id": 7
+    },
+    {
+      "name": "The Haunting of Hill House",
+      "showId": "29191",
+      "id": 8
+    },
+    {
+      "name": "The Haunting of Bly Manor",
+      "showId": "49673",
+      "id": 9
+    },
+    {
+      "name": "How I Met Your Mother",
+      "showId": "171",
+      "id": 10
+    },
+    {
+      "name": "That Time I Got Reincarnated as a Slime",
+      "showId": "38390",
+      "id": 11
+    },
+    {
+      "name": "Barney & Friends",
+      "showId": "15482",
+      "id": 12
+    },
+    {
+      "name": "Teletubbies",
+      "showId": "8401",
+      "id": 13
+    },
+    {
+      "name": "Lost",
+      "showId": "123",
+      "id": 14
     }
   ]
 }
