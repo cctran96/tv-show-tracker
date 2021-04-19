@@ -14,10 +14,12 @@ const showInfo = document.querySelector('#show-info')
 searchBar.addEventListener('submit', handleSubmit)
 
 // Functions
+let previousSearch
 function handleSubmit(e) {
     e.preventDefault()
 
     showInfo.innerHTML = ''
+    previousSearch = searchInput.value
     fetchShowSearchResults(searchInput.value)
     .then(data => {
         let cardList = document.createElement('div')
@@ -45,7 +47,8 @@ function searchResults(show) {
     let title = show.name
     let genre = `${(show.genres.length > 1)? 'Genres:' : 'Genre:'} ${(show.genres.length)? show.genres.join(', ') : 'Unavailable'}`
     let language = `Language: ${show.language}`
-    let runtime = `Runtime: ${(show.runtime)? show.runtime + ' minutes' : 'Unavailable'}`
+    let runtime = `${(show.runtime)? show.runtime + ' minutes': 'Unavailable'}`
+    runtime = `Runtime: ${(show.averageRuntime)? Math.round(show.averageRuntime/10)*10 + ' minutes': runtime}`
     let image = (show.image)? show.image.medium : imgNotFound
     let rating = `Rating: ${(show.rating.average)? show.rating.average : 'Unavailable'}`
 
@@ -81,6 +84,9 @@ function showDetails(id) {
         let parser = new DOMParser()
         let summary = parser.parseFromString(details.summary, 'text/html').querySelector('p')
 
+        let comments = document.createElement('div')
+        createBackButton()
+
         let castHeader = document.createElement('h2')
         castHeader.innerText = 'Cast'
 
@@ -90,9 +96,7 @@ function showDetails(id) {
             castList.appendChild(createCastMemberCard(castMember))
         })
 
-        showInfo.appendChild(summary)
-        showInfo.appendChild(castHeader)
-        showInfo.appendChild(castList)
+        showInfo.append(summary, comments, castHeader, castList)
     })
 }
 
@@ -138,6 +142,7 @@ function pinFavorites(favorites) {
     li.innerText = favorites.name
     li.classList = favorites.showId
     li.id = favorites.id
+    li.addEventListener('click', event => showDetails(favorites.showId))
     li.appendChild(button)
     pinnedShows.appendChild(li)
 }
@@ -207,4 +212,18 @@ function changeButtonText(button, showId) {
             }
         }
     })
+}
+
+function createBackButton() {
+    let cardInfo = document.querySelector('.text')
+    const button = document.createElement('button')
+    button.innerText = 'Go back'
+    button.addEventListener('click', previousSearchResult)
+    cardInfo.appendChild(button)
+}
+
+function previousSearchResult() {
+    showInfo.innerHTML = ''
+    fetchShowSearchResults(previousSearch)
+    .then(data => data.forEach(show => showInfo.appendChild(searchResults(show.show))))
 }
