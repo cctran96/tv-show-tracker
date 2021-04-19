@@ -97,15 +97,29 @@ function handleFavorites() {
         showId: this.classList.value,
     }
 
-    getFavorites().then(shows => {
-        console.log(shows)
-        for (show in shows) {
-            console.log(show)
-            if (show.showId == obj.showId) {
-                removeFavorites(show.id)
-            }
+    getFavorites().then(shows => filterFavorites(obj, shows))
+}
+
+function filterFavorites(obj, shows) {
+    let found = false
+    let foundId
+    for (let i = 0; i < shows.length; i++) {
+        if (shows[i].showId == obj.showId) {
+            found = true
+            foundId = shows[i].id
+            break
         }
-    })
+    }
+    if (found === true) {
+        removeFavorites(foundId)
+        let show = document.getElementById(foundId)
+        show.remove()
+    } else {
+        addFavorites(obj)
+        let show = obj.name
+        let button = document.getElementById(show)
+        button.innerText = 'Unpin from favorites'
+    }
 }
 
 function addFavorites(obj) {
