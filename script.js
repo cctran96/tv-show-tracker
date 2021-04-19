@@ -1,8 +1,8 @@
-const localURL = 'http://localhost:3000/Favorites/'
+const localURL = 'http://localhost:3000/favorites/'
 const imgNotFound = 'https://st3.depositphotos.com/1322515/35964/v/600/depositphotos_359648638-stock-illustration-image-available-icon.jpg'
 
 // Initialize favorites menu
-getFavorites().then(data => data.forEach(show => pinFavorites(show)))
+fetchFavorites().then(data => data.forEach(show => pinFavorites(show)))
 
 // Selectors
 const searchBar = document.querySelector('#search-bar')
@@ -40,7 +40,7 @@ function searchResults(show) {
     let title = show.name
     let genre = `${(show.genres.length > 1)? 'Genres:' : 'Genre:'} ${(show.genres.length)? show.genres.join(', ') : 'Unavailable'}`
     let language = `Language: ${show.language}`
-    let runtime = `Runtime: ${(show.runtime.average)? show.runtime.average : 'Unavailable'}`
+    let runtime = `Runtime: ${(show.runtime)? show.runtime : 'Unavailable'} minutes`
     let image = (show.image)? show.image.medium : imgNotFound
     let rating = `Rating: ${(show.rating.average)? show.rating.average : 'Unavailable'}`
 
@@ -54,7 +54,7 @@ function searchResults(show) {
     showRating.innerText = rating
     showLanguage.innerText = language
     showRun.innerText = runtime
-    button.innerText = 'Pin to Favorites'
+    changeButtonText(button, show.id)
     button.classList = show.id
     button.id = show.name
     button.addEventListener('click', handleFavorites)
@@ -117,7 +117,7 @@ function fetchShowDetails(id) {
     return fetch(castURL).then(r => r.json())
 }
 
-function getFavorites() {
+function fetchFavorites() {
     return fetch(localURL)
     .then(r => r.json())
 }
@@ -126,7 +126,6 @@ function pinFavorites(favorites) {
     const li = document.createElement('li')
     const button = document.createElement('button')
     button.innerText = 'X'
-    button.style.marginLeft = 5
     button.addEventListener('click', unpinFromSide)
     li.innerText = favorites.name
     li.classList = favorites.showId
@@ -141,7 +140,7 @@ function handleFavorites() {
         showId: this.classList.value,
     }
 
-    getFavorites().then(shows => filterFavorites(obj, shows))
+    fetchFavorites().then(shows => filterFavorites(obj, shows))
 }
 
 function filterFavorites(obj, shows) {
@@ -163,7 +162,7 @@ function filterFavorites(obj, shows) {
         show.remove()
     } else {
         addFavorites(obj)
-        button.innerText = 'Unpin from favorites'
+        button.innerText = 'Remove from favorites'
     }
 }
 
@@ -177,9 +176,7 @@ function addFavorites(obj) {
         body: JSON.stringify(obj)
     }
 
-    fetch(localURL, config)
-    .then(r => r.json())
-    .then(data => pinFavorites(data))
+    fetch(localURL, config).then(r => r.json()).then(data => pinFavorites(data))
 }
 
 function removeFavorites(id) {
@@ -189,4 +186,17 @@ function removeFavorites(id) {
 function unpinFromSide() {
     removeFavorites(this.parentNode.id)
     this.parentNode.remove()
+}
+
+function changeButtonText(button, showId) {
+    fetchFavorites().then(shows => {
+        for (let i = 0; i < shows.length; i++) {
+            if (shows[i].showId == showId) {
+                button.innerText = 'Remove from favorites'
+                break
+            } else {
+                button.innerText = 'Pin to Favorites'
+            }
+        }
+    })
 }

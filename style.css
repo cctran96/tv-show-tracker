@@ -96,3 +96,7 @@ a:hover {
     color: white;
     background-color: rgb(27, 22, 22);
 }
+
+li button {
+    margin-left: 5px;
+}
