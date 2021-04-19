@@ -100,3 +100,8 @@ ul {
 li button {
     margin-left: 5px;
 }
+
+.text button {
+    margin-bottom: 20px;
+    display: block;
+}

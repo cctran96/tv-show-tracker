@@ -14,10 +14,12 @@ const showInfo = document.querySelector('#show-info')
 searchBar.addEventListener('submit', handleSubmit)
 
 // Functions
+let previousSearch
 function handleSubmit(e) {
     e.preventDefault()
 
     showInfo.innerHTML = ''
+    previousSearch = searchInput.value
     fetchShowSearchResults(searchInput.value)
     .then(data => data.forEach(show => showInfo.appendChild(searchResults(show.show))))
 
@@ -76,6 +78,9 @@ function showDetails(id) {
         let parser = new DOMParser()
         let summary = parser.parseFromString(details.summary, 'text/html').querySelector('p')
 
+        let comments = document.createElement('div')
+        createBackButton()
+
         let castHeader = document.createElement('h2')
         castHeader.innerText = 'Cast'
 
@@ -84,9 +89,7 @@ function showDetails(id) {
             castList.appendChild(createCastMemberCard(castMember))
         })
 
-        showInfo.appendChild(summary)
-        showInfo.appendChild(castHeader)
-        showInfo.appendChild(castList)
+        showInfo.append(summary, comments, castHeader, castList)
     })
 }
 
@@ -201,4 +204,18 @@ function changeButtonText(button, showId) {
             }
         }
     })
+}
+
+function createBackButton() {
+    let cardInfo = document.querySelector('.text')
+    const button = document.createElement('button')
+    button.innerText = 'Go back'
+    button.addEventListener('click', previousSearchResult)
+    cardInfo.appendChild(button)
+}
+
+function previousSearchResult() {
+    showInfo.innerHTML = ''
+    fetchShowSearchResults(previousSearch)
+    .then(data => data.forEach(show => showInfo.appendChild(searchResults(show.show))))
 }
