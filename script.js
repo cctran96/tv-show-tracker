@@ -82,11 +82,37 @@ function showDetails(id) {
         let parser = new DOMParser()
         let summary = parser.parseFromString(details.summary, 'text/html').querySelector('p')
 
+
+        let castHeader = document.createElement('h2')
+        castHeader.innerText = "Cast"
+
+        let castList = document.createElement('ul')
+        details._embedded.cast.forEach(castMember => {
+            castList.appendChild(createCastMemberCard(castMember))
+        })
+
         showInfo.appendChild(summary)
+        showInfo.appendChild(castHeader)
+        showInfo.appendChild(castList)
     })
 }
 
-// fetch details of a given show from tvmaze
+function createCastMemberCard(castMember) {
+    let li = document.createElement('li')
+
+    let img = document.createElement('img')
+    img.src = castMember.person.image.medium
+
+    let text = document.createElement('p')
+    text.innerHTML = `<em>${castMember.person.name}</em><br>as ${castMember.character.name}`
+
+    li.appendChild(img)
+    li.appendChild(text)
+
+    return li
+}
+
+// fetch details of a given show including cast members from tvmaze
 function fetchShowDetails(id) {
     const castURL = `http://api.tvmaze.com/shows/${id}?embed=cast`
     return fetch(castURL).then(r => r.json())
