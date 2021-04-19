@@ -1,4 +1,3 @@
-const searchURL = 'http://api.tvmaze.com/search/shows?q='
 const localURL = 'http://localhost:3000/Favorites/'
 
 // Initialize favorites menu
@@ -16,10 +15,11 @@ searchBar.addEventListener('submit', handleSubmit)
 // Functions
 function handleSubmit(e) {
     e.preventDefault()
+
     showInfo.innerHTML = ''
-    fetch(searchURL + searchInput.value)
-    .then(r => r.json())
-    .then(data => data.forEach(show => searchResults(show.show)))
+    fetchShowSearchResults(searchInput.value)
+    .then(data => data.forEach(show => showInfo.appendChild(searchResults(show.show))))
+
     e.target.reset()
 }
 
@@ -67,7 +67,8 @@ function searchResults(show) {
     button.addEventListener('click', handleFavorites)
     text.append(showName, showGenre, showRating, showLanguage, showRun, button)
     container.append(img, text)
-    showInfo.appendChild(container)
+    
+    return container
 }
 
 
@@ -75,13 +76,11 @@ function searchResults(show) {
 function showDetails(id) {
     fetchShowDetails(id)
     .then(details => {
-        console.log(details)
         showInfo.innerText = ''
-        searchResults(details)
+        showInfo.appendChild(searchResults(details))
         
         let parser = new DOMParser()
         let summary = parser.parseFromString(details.summary, 'text/html').querySelector('p')
-
 
         let castHeader = document.createElement('h2')
         castHeader.innerText = "Cast"
@@ -110,6 +109,12 @@ function createCastMemberCard(castMember) {
     li.appendChild(text)
 
     return li
+}
+
+// fetch search results for a given show title
+function fetchShowSearchResults(searchString) {
+    const showSearchEndpoint = 'http://api.tvmaze.com/search/shows?q='
+    return fetch(showSearchEndpoint + searchString).then(resp => resp.json())
 }
 
 // fetch details of a given show including cast members from tvmaze
