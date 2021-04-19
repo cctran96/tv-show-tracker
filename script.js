@@ -27,15 +27,17 @@ function searchResults(show) {
     const showGenre = document.createElement('h3')
     const showRating = document.createElement('h3')
     const showLanguage = document.createElement('h3')
+    const showRun = document.createElement('h3')
     const button = document.createElement('button')
 
     let title = 'Name: ' + show.show.name
     let genre = 'Genre: ' + show.show.genres.toString()
     let language = 'Language: ' + show.show.language
+    let runtime = 'Runtime: ' + show.show.runtime + ' minutes'
     let image
     let rating
     if (show.show.image === null) {
-        image = 'https://image.shutterstock.com/image-vector/no-user-profile-picture-hand-260nw-99335579.jpg'
+        image = 'https://st3.depositphotos.com/1322515/35964/v/600/depositphotos_359648638-stock-illustration-image-available-icon.jpg'
     } else {
         image = show.show.image.medium
     }
@@ -48,13 +50,24 @@ function searchResults(show) {
     container.classList = 'card'
     text.classList = 'text'
     img.src = image
+    img.classList = show.show.id
+    img.addEventListener('click', showDetails)
     showName.innerText = title
     showGenre.innerText = genre
     showRating.innerText = rating
     showLanguage.innerText = language
+    showRun.innerText = runtime
     button.innerText = 'Pin to favorites'
-    button.id = show.show.id
-    text.append(showName, showGenre, showRating, showLanguage, button)
+    button.classList = show.show.id
+    text.append(showName, showGenre, showRating, showLanguage, showRun, button)
     container.append(img, text)
     showInfo.appendChild(container)
+}
+
+function showDetails() {
+    const id = this.classList.value
+    const castURL = `http://api.tvmaze.com/shows/${id}?embed=cast`
+    fetch(castURL)
+    .then(r => r.json())
+    .then(data => console.log(data))
 }

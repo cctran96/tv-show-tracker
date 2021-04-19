@@ -4,11 +4,13 @@
     height: 100%;
     top: 57px;
     left: 0;
-    background: gray;
+    background: black;
 }
 
 #pin {
     margin-left: 10px;
+    color: whitesmoke;
+    text-align: center;
 }
 
 #topbar {
@@ -49,8 +51,45 @@
     align-self: flex-start;
     object-fit: contain;
     margin-right: 30px;
+    width: 210px;
+    height: 295px;
 }
 
 .text {
     flex: 1 1 auto;
+}
+
+#tv-shows {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    display: block;
+    padding: 1em 0;
+    color: whitesmoke;
+    text-decoration: none;
+    transition: 0.15s linear color;
+}
+
+a:hover {
+    color: #fff;
+}
+
+#tv-shows {
+    list-style: none;
+}
+
+#tv-shows li {
+    list-style-position: inside;
+    color: whitesmoke;
+    text-align: center;
+    border: 2px white;
+    padding: 20px;
+}
+
+#tv-shows li:hover {
+    color: white;
+    background-color: rgb(27, 22, 22);
 }
