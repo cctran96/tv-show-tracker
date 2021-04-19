@@ -1,5 +1,8 @@
 const searchURL = 'http://api.tvmaze.com/search/shows?q='
-const localURL = 'http://localhost:3000/Favorites'
+const localURL = 'http://localhost:3000/Favorites/'
+
+// Initialize favorites menu
+getFavorites().then(data => data.forEach(show => pinFavorites(show)))
 
 // Selectors
 const searchBar = document.querySelector('#search-bar')
@@ -82,20 +85,37 @@ function fetchShowDetails(id) {
     return fetch(castURL).then(r => r.json())
 }
 
-function pinFavorites() {
-    fetch(localURL)
+function getFavorites() {
+    return fetch(localURL)
     .then(r => r.json())
-    .then(data => console.log(data))
+}
+
+function pinFavorites(favorites) {
+    const li = document.createElement('li')
+    li.innerText = favorites.name
+    li.classList = favorites.showId
+    li.id = favorites.id
+    pinnedShows.appendChild(li)
 }
 
 function handleFavorites() {
-    const showName = this.parentNode.firstChild.innerText.toString()
-    const showId = this.classList.value
-    
     const obj = {
-        Name: this,
+        name: this.id,
         showId: this.classList.value,
     }
+
+    getFavorites().then(shows => {
+        console.log(shows)
+        for (show in shows) {
+            console.log(show)
+            if (show.showId == obj.showId) {
+                removeFavorites(show.id)
+            }
+        }
+    })
+}
+
+function addFavorites(obj) {
     const config = {
         method: 'POST',
         headers: {
@@ -104,4 +124,12 @@ function handleFavorites() {
         },
         body: JSON.stringify(obj)
     }
+
+    fetch(localURL, config)
+    .then(r => r.json())
+    .then(data => pinFavorites(data))
+}
+
+function removeFavorites(id) {
+    fetch(localURL + id, {method: 'DELETE'})
 }
