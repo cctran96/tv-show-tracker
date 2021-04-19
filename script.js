@@ -1,4 +1,5 @@
 const searchURL = 'http://api.tvmaze.com/search/shows?q='
+const localURL = 'http://localhost:3000/Favorites'
 
 // Selectors
 const searchBar = document.querySelector('#search-bar')
@@ -59,6 +60,8 @@ function searchResults(show) {
     showRun.innerText = runtime
     button.innerText = 'Pin to favorites'
     button.classList = show.show.id
+    button.id = show.show.name
+    button.addEventListener('click', handleFavorites)
     text.append(showName, showGenre, showRating, showLanguage, showRun, button)
     container.append(img, text)
     showInfo.appendChild(container)
@@ -70,4 +73,28 @@ function showDetails() {
     fetch(castURL)
     .then(r => r.json())
     .then(data => console.log(data))
+}
+
+function pinFavorites() {
+    fetch(localURL)
+    .then(r => r.json())
+    .then(data => console.log(data))
+}
+
+function handleFavorites() {
+    const showName = this.parentNode.firstChild.innerText.toString()
+    const showId = this.classList.value
+    
+    const obj = {
+        Name: this,
+        showId: this.classList.value,
+    }
+    const config = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(obj)
+    }
 }
