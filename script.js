@@ -85,9 +85,14 @@ function getFavorites() {
 
 function pinFavorites(favorites) {
     const li = document.createElement('li')
+    const button = document.createElement('button')
+    button.innerText = 'X'
+    button.style.marginLeft = 5
+    button.addEventListener('click', unpinFromSide)
     li.innerText = favorites.name
     li.classList = favorites.showId
     li.id = favorites.id
+    li.appendChild(button)
     pinnedShows.appendChild(li)
 }
 
@@ -101,6 +106,8 @@ function handleFavorites() {
 }
 
 function filterFavorites(obj, shows) {
+    let show = obj.name
+    let button = document.getElementById(show)
     let found = false
     let foundId
     for (let i = 0; i < shows.length; i++) {
@@ -113,11 +120,10 @@ function filterFavorites(obj, shows) {
     if (found === true) {
         removeFavorites(foundId)
         let show = document.getElementById(foundId)
+        button.innerText = 'Pin to favorites'
         show.remove()
     } else {
         addFavorites(obj)
-        let show = obj.name
-        let button = document.getElementById(show)
         button.innerText = 'Unpin from favorites'
     }
 }
@@ -139,4 +145,9 @@ function addFavorites(obj) {
 
 function removeFavorites(id) {
     fetch(localURL + id, {method: 'DELETE'})
+}
+
+function unpinFromSide() {
+    removeFavorites(this.parentNode.id)
+    this.parentNode.remove()
 }
