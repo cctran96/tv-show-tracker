@@ -52,7 +52,7 @@ function searchResults(show) {
     text.classList = 'text'
     img.src = image
     img.classList = show.id
-    img.addEventListener('click', showDetails)
+    img.addEventListener('click', event => showDetails(show.id))
     showName.innerText = title
     showGenre.innerText = genre
     showRating.innerText = rating
