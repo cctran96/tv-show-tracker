@@ -24,7 +24,9 @@ function handleSubmit(e) {
     e.target.reset()
 }
 
+// returns a new div containing a show details
 function searchResults(show) {
+    console.log(show)
     const container = document.createElement('div')
     const text = document.createElement('div')
     const img = document.createElement('img')
@@ -36,9 +38,9 @@ function searchResults(show) {
     const button = document.createElement('button')
 
     let title = show.name
-    let genre = `${(show.genres.length > 1)? 'Genres:' : 'Genre:'} ${show.genres.join(', ')}`
+    let genre = `${(show.genres.length > 1)? 'Genres:' : 'Genre:'} ${(show.genres.length)? show.genres.join(', ') : 'Unavailable'}`
     let language = `Language: ${show.language}`
-    let runtime = 'Runtime: ' + show.runtime + ' minutes'
+    let runtime = `Runtime: ${(show.runtime.average)? show.runtime.average : 'Unavailable'}`
     let image = (show.image)? show.image.medium : imgNotFound
     let rating = `Rating: ${(show.rating.average)? show.rating.average : 'Unavailable'}`
 
@@ -87,6 +89,7 @@ function showDetails(id) {
     })
 }
 
+// returns a new li element containg cast member details
 function createCastMemberCard(castMember) {
     let li = document.createElement('li')
 
