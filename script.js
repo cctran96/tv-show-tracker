@@ -134,7 +134,10 @@ function pinFavorites(favorites) {
     li.innerText = favorites.name
     li.classList = favorites.showId
     li.id = favorites.id
-    li.addEventListener('click', event => showDetails(favorites.showId))
+    li.addEventListener('click', event => {
+        showDetails(favorites.showId)
+        previousSearch = 'emptysearch'
+    })
     li.appendChild(button)
     pinnedShows.appendChild(li)
 }

@@ -3,38 +3,38 @@
     {
       "name": "Breaking Bad",
       "showId": "169",
-      "id": 3,
-      "comments": []
+      "id": 3
     },
     {
       "name": "The Office",
       "showId": "526",
-      "id": 4,
-      "comments": []
+      "id": 4
     },
     {
       "name": "The Haunting of Hill House",
       "showId": "29191",
-      "id": 8,
-      "comments": []
+      "id": 8
     },
     {
       "name": "How I Met Your Mother",
       "showId": "171",
-      "id": 10,
-      "comments": []
+      "id": 10
     },
     {
       "name": "Lost",
       "showId": "123",
-      "id": 14,
-      "comments": []
+      "id": 14
     },
     {
       "name": "Friends",
       "showId": "431",
-      "id": 15,
-      "comments": []
+      "id": 15
     }
+  ],
+  "comments": [
+
+  ],
+  "users": [
+    
   ]
 }
