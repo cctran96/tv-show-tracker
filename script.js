@@ -72,11 +72,18 @@ function searchResults(show) {
 function showDetails(id) {
     fetchShowDetails(id)
     .then(details => {
-        showInfo.innerText = '';
-        searchResults(details);
+        console.log(details)
+        showInfo.innerText = ''
+        searchResults(details)
+        
+        let parser = new DOMParser()
+        let summary = parser.parseFromString(details.summary, 'text/html').querySelector('p')
+
+        showInfo.appendChild(summary)
     })
 }
 
+// fetch details of a given show from tvmaze
 function fetchShowDetails(id) {
     const castURL = `http://api.tvmaze.com/shows/${id}?embed=cast`
     return fetch(castURL).then(r => r.json())
