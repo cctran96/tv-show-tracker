@@ -3,7 +3,7 @@ const commentURL = 'http://localhost:3000/comments'
 const imgNotFound = 'https://st3.depositphotos.com/1322515/35964/v/600/depositphotos_359648638-stock-illustration-image-available-icon.jpg'
 
 // initializes favorites menu
-fetchFavorites().then(data => data.forEach(show => pinFavorites(show))).catch(catchFavoritesError())
+fetchFavorites().then(data => data.forEach(show => pinFavorites(show))).catch(catchFavoritesError)
 
 // current user and previous search result
 let currentUser = {
@@ -84,7 +84,7 @@ function changeButtonText(button, showId) {
                 button.innerText = 'Pin to Favorites'
             }
         }
-    }).catch(button.innerText = 'Pin to Favorites')
+    }).catch(event => button.innerText = 'Pin to Favorites')
 }
 
 // appends a show's details to the information pane
@@ -177,7 +177,7 @@ function handleFavorites() {
         showId: parseInt(this.classList.value),
     }
 
-    fetchFavorites().then(shows => filterFavorites(obj, shows)).catch(alert('The Favorites menu is not responding. Please check the server and refresh the page.'))
+    fetchFavorites().then(shows => filterFavorites(obj, shows)).catch(event => alert('The Favorites menu is not responding. Please check the server and refresh the page.'))
 }
 
 // changes function of pinning button and edits the text inside
