@@ -120,3 +120,7 @@ li button {
 #comments p {
     display: inline;
 }
+
+#comments form {
+    margin-left: 40px;
+}

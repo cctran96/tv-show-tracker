@@ -1,8 +1,16 @@
 const localURL = 'http://localhost:3000/favorites/'
+const commentURL = 'http://localhost:3000/comments'
 const imgNotFound = 'https://st3.depositphotos.com/1322515/35964/v/600/depositphotos_359648638-stock-illustration-image-available-icon.jpg'
 
 // Initialize favorites menu
 fetchFavorites().then(data => data.forEach(show => pinFavorites(show)))
+
+// Current user
+let currentUser = {
+    id: 5,
+    name: 'anonymous',
+    pic: 'https://tabarrukoffer.islamicly.com/Content/images/noimage.png'
+}
 
 // Selectors
 const searchBar = document.querySelector('#search-bar')
@@ -221,7 +229,6 @@ function previousSearchResult() {
 }
 
 function fetchComments() {
-    const commentURL = 'http://localhost:3000/comments'
     return fetch(commentURL).then(r => r.json())
 }
 
@@ -233,16 +240,27 @@ function fetchUser() {
 function commentDetails(showId) {
     const commentSection = document.createElement('div')
     const commentHeading = document.createElement('h2')
+    const commentForm = document.createElement('form')
+    const submitBox = document.createElement('input')
+    const submitButton = document.createElement('input')
     const commentList = document.createElement('ul')
     const noCommentYet = document.createElement('li')
 
+    submitBox.placeholder = 'Add a new comment...'
+    submitBox.type = 'text'
+    submitBox.classList = showId
+    submitButton.type = 'submit'
+    submitButton.value = 'Submit'
     commentHeading.innerText = 'Comments'
     commentSection.id = 'comments'
+    commentList.id = 'comment-list'
     noCommentYet.innerText = 'No comments yet...'
     addCommentsToPage(commentList, showId)
 
+    commentForm.addEventListener('submit', handleNewComment)
+    commentForm.append(submitBox, submitButton)
     commentList.appendChild(noCommentYet)
-    commentSection.append(commentHeading, commentList)
+    commentSection.append(commentHeading, commentList, commentForm)
     return commentSection
 }
 
@@ -262,4 +280,31 @@ function addCommentsToPage(list, showId) {
             })
         }
     }))
+}
+
+function handleNewComment(e) {
+    const obj = {
+            showId: parseInt(this.firstChild.classList.value),
+            user: currentUser.id,
+            comment: this.firstChild.value
+    }
+
+    e.preventDefault()
+    postNewComment(obj)
+    e.target.reset()
+}
+
+function postNewComment(comment) {
+    const config = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(comment)
+    }
+    fetch(commentURL, config).then(r => r.json()).then(data => {
+        const list = document.querySelector('#comment-list')
+        addCommentsToPage(list, data.showId)
+    })
 }
