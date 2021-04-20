@@ -7,11 +7,10 @@ fetchFavorites().then(data => data.forEach(show => pinFavorites(show)))
 
 // current user and previous search result
 let currentUser = {
-    id: 5,
-    name: 'anonymous',
-    pic: 'https://tabarrukoffer.islamicly.com/Content/images/noimage.png'
-}
-
+    "id": 6,
+    "name": "ShaquilleOatmeal",
+    "pic": "https://avatars.sched.co/a/55/6166123/avatar.jpg?5f4"
+  }
 let previousSearch = ''
 
 // selectors

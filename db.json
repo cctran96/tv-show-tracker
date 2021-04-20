@@ -16,24 +16,14 @@
       "id": 8
     },
     {
-      "name": "How I Met Your Mother",
-      "showId": 171,
-      "id": 10
-    },
-    {
       "name": "Friends",
       "showId": 431,
       "id": 17
     },
     {
-      "name": "Lost",
-      "showId": 123,
+      "name": "How I Met Your Mother",
+      "showId": 171,
       "id": 18
-    },
-    {
-      "name": "That Time I Got Reincarnated as a Slime",
-      "showId": 38390,
-      "id": 19
     }
   ],
   "comments": [
@@ -72,6 +62,120 @@
       "user": 5,
       "comment": "Boring...",
       "id": 6
+    },
+    {
+      "showId": 29191,
+      "user": 5,
+      "comment": "This show gave me the chills",
+      "id": 7
+    },
+    {
+      "showId": 38390,
+      "user": 1,
+      "comment": "One of my favorites",
+      "id": 8
+    },
+    {
+      "showId": 431,
+      "user": 15,
+      "comment": "I loved this",
+      "id": 9
+    },
+    {
+      "showId": 29191,
+      "user": 15,
+      "comment": "I'm scared of ghosts now",
+      "id": 10
+    },
+    {
+      "showId": 526,
+      "user": 15,
+      "comment": "Love the dry humor",
+      "id": 11
+    },
+    {
+      "showId": 526,
+      "user": 12,
+      "comment": "So funny!",
+      "id": 12
+    },
+    {
+      "showId": 26856,
+      "user": 12,
+      "comment": "Wish I had a stalker like him",
+      "id": 13
+    },
+    {
+      "showId": 816,
+      "user": 12,
+      "comment": "My anaconda don't want none unless you got buns, hun",
+      "id": 14
+    },
+    {
+      "showId": 169,
+      "user": 12,
+      "comment": "The best drug lord",
+      "id": 15
+    },
+    {
+      "showId": 431,
+      "user": 11,
+      "comment": "I need more friends like them",
+      "id": 16
+    },
+    {
+      "showId": 6771,
+      "user": 11,
+      "comment": "This was my favorite cartoon as a kid",
+      "id": 17
+    },
+    {
+      "showId": 7335,
+      "user": 11,
+      "comment": "One of my favorites!",
+      "id": 18
+    },
+    {
+      "showId": 171,
+      "user": 8,
+      "comment": "loved it but the end disappointed me...",
+      "id": 19
+    },
+    {
+      "showId": 49925,
+      "user": 8,
+      "comment": "this is not how it went down",
+      "id": 20
+    },
+    {
+      "showId": 526,
+      "user": 8,
+      "comment": "i think i'm funnier",
+      "id": 21
+    },
+    {
+      "showId": 29191,
+      "user": 8,
+      "comment": "not as scary as that b carole baskin",
+      "id": 22
+    },
+    {
+      "showId": 15482,
+      "user": 9,
+      "comment": "Not right for kids",
+      "id": 23
+    },
+    {
+      "showId": 169,
+      "user": 10,
+      "comment": "Very good",
+      "id": 24
+    },
+    {
+      "showId": 47728,
+      "user": 7,
+      "comment": "I'm a celebrity. Why am I not on this?",
+      "id": 25
     }
   ],
   "users": [
@@ -128,26 +232,26 @@
     {
       "id": 11,
       "name": "Cardi C",
-      "pic": "https://tabarrukoffer.islamicly.com/Content/images/noimage.png"
+      "pic": "https://i1.sndcdn.com/avatars-000722140906-nnpsdo-t240x240.jpg"
     },
     {
       "id": 12,
-      "name": "KissMyAxe",
-      "pic": "https://tabarrukoffer.islamicly.com/Content/images/noimage.png"
+      "name": "Anna Conda",
+      "pic": "https://i.ytimg.com/vi/qgXY51Cx6iI/maxresdefault.jpg"
     },
     {
       "id": 13,
-      "name": "KissMyAxe",
+      "name": "i_was_reloading",
       "pic": "https://tabarrukoffer.islamicly.com/Content/images/noimage.png"
     },
     {
       "id": 14,
-      "name": "KissMyAxe",
+      "name": "Julius Sneezer",
       "pic": "https://tabarrukoffer.islamicly.com/Content/images/noimage.png"
     },
     {
       "id": 15,
-      "name": "KissMyAxe",
+      "name": "ctr_alt_dlt",
       "pic": "https://tabarrukoffer.islamicly.com/Content/images/noimage.png"
     }
   ]
