@@ -3,7 +3,7 @@ const commentURL = 'http://localhost:3000/comments'
 const imgNotFound = 'https://st3.depositphotos.com/1322515/35964/v/600/depositphotos_359648638-stock-illustration-image-available-icon.jpg'
 
 // initializes favorites menu
-fetchFavorites().then(data => data.forEach(show => pinFavorites(show)))
+fetchFavorites().then(data => data.forEach(show => pinFavorites(show))).catch(catchFavoritesError())
 
 // current user and previous search result
 let currentUser = {
@@ -73,6 +73,19 @@ function searchResults(show) {
     return container
 }
 
+// searches through favorites list and edits the pin button text correctly on search result
+function changeButtonText(button, showId) {
+    fetchFavorites().then(shows => {
+        for (let i = 0; i < shows.length; i++) {
+            if (shows[i].showId == showId) {
+                button.innerText = 'Remove from favorites'
+                break
+            } else {
+                button.innerText = 'Pin to Favorites'
+            }
+        }
+    }).catch(button.innerText = 'Pin to Favorites')
+}
 
 // appends a show's details to the information pane
 function showDetails(id) {
@@ -149,6 +162,14 @@ function pinFavorites(favorites) {
     pinnedShows.appendChild(li)
 }
 
+// displays an error message on sidebar when unable to fetch favorites from local server
+function catchFavoritesError() {
+    const pinnedShows = document.querySelector('#tv-shows')
+    const h4 = document.createElement('h4')
+    h4.innerText = 'Unable to load favorites. Please check the server and refresh the page.'
+    pinnedShows.replaceWith(h4, pinnedShows)
+}
+
 // 
 function handleFavorites() {
     const obj = {
@@ -156,7 +177,7 @@ function handleFavorites() {
         showId: parseInt(this.classList.value),
     }
 
-    fetchFavorites().then(shows => filterFavorites(obj, shows))
+    fetchFavorites().then(shows => filterFavorites(obj, shows)).catch(alert('The Favorites menu is not responding. Please check the server and refresh the page.'))
 }
 
 // changes function of pinning button and edits the text inside
@@ -207,20 +228,6 @@ function removeFavorites(id) {
 function unpinFromSide() {
     removeFavorites(this.parentNode.id)
     .then(data => this.parentNode.remove())
-}
-
-// searches through favorites list and edits the pin button text correctly on search result
-function changeButtonText(button, showId) {
-    fetchFavorites().then(shows => {
-        for (let i = 0; i < shows.length; i++) {
-            if (shows[i].showId == showId) {
-                button.innerText = 'Remove from favorites'
-                break
-            } else {
-                button.innerText = 'Pin to Favorites'
-            }
-        }
-    })
 }
 
 // creates a back button after clicking a show for additional info

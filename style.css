@@ -92,6 +92,12 @@ ul {
     cursor: pointer;
 }
 
+h4 {
+    color: whitesmoke;
+    padding: 20px;
+    text-align: center;
+}
+
 #tv-shows li:hover {
     color: white;
     background-color: rgb(27, 22, 22);
