@@ -1,8 +1,16 @@
 const localURL = 'http://localhost:3000/favorites/'
+const commentURL = 'http://localhost:3000/comments'
 const imgNotFound = 'https://st3.depositphotos.com/1322515/35964/v/600/depositphotos_359648638-stock-illustration-image-available-icon.jpg'
 
 // Initialize favorites menu
 fetchFavorites().then(data => data.forEach(show => pinFavorites(show)))
+
+// Current user
+let currentUser = {
+    id: 5,
+    name: 'anonymous',
+    pic: 'https://tabarrukoffer.islamicly.com/Content/images/noimage.png'
+}
 
 // Selectors
 const searchBar = document.querySelector('#search-bar')
@@ -33,7 +41,6 @@ function handleSubmit(e) {
 
 // returns a new div containing a show details
 function searchResults(show) {
-    console.log(show)
     const container = document.createElement('div')
     const text = document.createElement('div')
     const img = document.createElement('img')
@@ -84,7 +91,6 @@ function showDetails(id) {
         let parser = new DOMParser()
         let summary = parser.parseFromString(details.summary, 'text/html').querySelector('p')
 
-        let comments = document.createElement('div')
         createBackButton()
 
         let castHeader = document.createElement('h2')
@@ -96,7 +102,7 @@ function showDetails(id) {
             castList.appendChild(createCastMemberCard(castMember))
         })
 
-        showInfo.append(summary, comments, castHeader, castList)
+        showInfo.append(summary, commentDetails(id), castHeader, castList)
     })
 }
 
@@ -130,8 +136,7 @@ function fetchShowDetails(id) {
 }
 
 function fetchFavorites() {
-    return fetch(localURL)
-    .then(r => r.json())
+    return fetch(localURL).then(r => r.json())
 }
 
 function pinFavorites(favorites) {
@@ -142,7 +147,10 @@ function pinFavorites(favorites) {
     li.innerText = favorites.name
     li.classList = favorites.showId
     li.id = favorites.id
-    li.addEventListener('click', event => showDetails(favorites.showId))
+    li.addEventListener('click', event => {
+        showDetails(favorites.showId)
+        previousSearch = 'emptysearch'
+    })
     li.appendChild(button)
     pinnedShows.appendChild(li)
 }
@@ -150,7 +158,7 @@ function pinFavorites(favorites) {
 function handleFavorites() {
     const obj = {
         name: this.id,
-        showId: this.classList.value,
+        showId: parseInt(this.classList.value),
     }
 
     fetchFavorites().then(shows => filterFavorites(obj, shows))
@@ -226,4 +234,85 @@ function previousSearchResult() {
     showInfo.innerHTML = ''
     fetchShowSearchResults(previousSearch)
     .then(data => data.forEach(show => showInfo.appendChild(searchResults(show.show))))
+}
+
+function fetchComments() {
+    return fetch(commentURL).then(r => r.json())
+}
+
+function fetchUser() {
+    const userURL = 'http://localhost:3000/users'
+    return fetch(userURL).then(r => r.json())
+}
+
+function commentDetails(showId) {
+    const commentSection = document.createElement('div')
+    const commentHeading = document.createElement('h2')
+    const commentForm = document.createElement('form')
+    const submitBox = document.createElement('input')
+    const submitButton = document.createElement('input')
+    const commentList = document.createElement('ul')
+    const noCommentYet = document.createElement('li')
+
+    submitBox.placeholder = 'Add a new comment...'
+    submitBox.type = 'text'
+    submitBox.classList = showId
+    submitButton.type = 'submit'
+    submitButton.value = 'Submit'
+    commentHeading.innerText = 'Comments'
+    commentSection.id = 'comments'
+    commentList.id = 'comment-list'
+    noCommentYet.innerText = 'No comments yet...'
+    addCommentsToPage(commentList, showId)
+
+    commentForm.addEventListener('submit', handleNewComment)
+    commentForm.append(submitBox, submitButton)
+    commentList.appendChild(noCommentYet)
+    commentSection.append(commentHeading, commentList, commentForm)
+    return commentSection
+}
+
+function addCommentsToPage(list, showId) {
+    fetchComments().then(comments => comments.forEach(comment => {
+        if (comment.showId === showId) {
+            list.innerHTML = ''
+            fetchUser().then(users => {
+                const li = document.createElement('li')
+                let userInfo = users.find(user => user.id === comment.user)
+                let img = document.createElement('img')
+                img.src = userInfo.pic
+                let p = document.createElement('p')
+                p.innerHTML = `<strong>${userInfo.name}</strong><br>${comment.comment}`
+                li.append(img, p)
+                list.appendChild(li)
+            })
+        }
+    }))
+}
+
+function handleNewComment(e) {
+    const obj = {
+            showId: parseInt(this.firstChild.classList.value),
+            user: currentUser.id,
+            comment: this.firstChild.value
+    }
+
+    e.preventDefault()
+    postNewComment(obj)
+    e.target.reset()
+}
+
+function postNewComment(comment) {
+    const config = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(comment)
+    }
+    fetch(commentURL, config).then(r => r.json()).then(data => {
+        const list = document.querySelector('#comment-list')
+        addCommentsToPage(list, data.showId)
+    })
 }

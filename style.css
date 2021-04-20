@@ -123,4 +123,31 @@ ul {
 
 li button {
     margin-left: 5px;
+<<<<<<< HEAD
+=======
+}
+
+.text button {
+    margin-bottom: 20px;
+    display: block;
+}
+
+#comments li{
+    margin-bottom: 10px;
+}
+
+#comments img{
+    float: left;
+    margin-right: 10px;
+    width: 30px;
+    height: 30px;
+}
+
+#comments p {
+    display: inline;
+}
+
+#comments form {
+    margin-left: 40px;
+>>>>>>> main
 }
