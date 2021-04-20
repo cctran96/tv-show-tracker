@@ -21,9 +21,19 @@
       "id": 10
     },
     {
+      "name": "Friends",
+      "showId": 431,
+      "id": 17
+    },
+    {
       "name": "Lost",
       "showId": 123,
-      "id": 16
+      "id": 18
+    },
+    {
+      "name": "That Time I Got Reincarnated as a Slime",
+      "showId": 38390,
+      "id": 19
     }
   ],
   "comments": [

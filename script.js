@@ -2,27 +2,28 @@ const localURL = 'http://localhost:3000/favorites/'
 const commentURL = 'http://localhost:3000/comments'
 const imgNotFound = 'https://st3.depositphotos.com/1322515/35964/v/600/depositphotos_359648638-stock-illustration-image-available-icon.jpg'
 
-// Initialize favorites menu
+// initializes favorites menu
 fetchFavorites().then(data => data.forEach(show => pinFavorites(show)))
 
-// Current user
+// current user and previous search result
 let currentUser = {
     id: 5,
     name: 'anonymous',
     pic: 'https://tabarrukoffer.islamicly.com/Content/images/noimage.png'
 }
 
-// Selectors
+let previousSearch = ''
+
+// selectors
 const searchBar = document.querySelector('#search-bar')
 const searchInput = document.querySelector('#search')
 const pinnedShows = document.querySelector('#tv-shows')
 const showInfo = document.querySelector('#show-info')
 
-// Event listeners
+// adds event listener to the searchbar
 searchBar.addEventListener('submit', handleSubmit)
 
-// Functions
-let previousSearch
+// populates search results on page
 function handleSubmit(e) {
     e.preventDefault()
 
@@ -46,7 +47,6 @@ function searchResults(show) {
     const showRun = document.createElement('h3')
     const button = document.createElement('button')
 
-    let title = show.name
     let genre = `${(show.genres.length > 1)? 'Genres:' : 'Genre:'} ${(show.genres.length)? show.genres.join(', ') : 'Unavailable'}`
     let language = `Language: ${show.language}`
     let runtime = `${(show.runtime)? show.runtime + ' minutes': 'Unavailable'}`
@@ -59,7 +59,7 @@ function searchResults(show) {
     img.src = image
     img.classList = show.id
     img.addEventListener('click', event => showDetails(show.id))
-    showName.innerText = title
+    showName.innerText = show.name
     showGenre.innerText = genre
     showRating.innerText = rating
     showLanguage.innerText = language
@@ -127,10 +127,11 @@ function fetchShowDetails(id) {
     return fetch(castURL).then(r => r.json())
 }
 
+// fetch favorites 
 function fetchFavorites() {
     return fetch(localURL).then(r => r.json())
 }
-
+// creates li element for a favorite show and appends it to sidebar
 function pinFavorites(favorites) {
     const li = document.createElement('li')
     const button = document.createElement('button')
@@ -147,6 +148,7 @@ function pinFavorites(favorites) {
     pinnedShows.appendChild(li)
 }
 
+// 
 function handleFavorites() {
     const obj = {
         name: this.id,
@@ -156,19 +158,17 @@ function handleFavorites() {
     fetchFavorites().then(shows => filterFavorites(obj, shows))
 }
 
+// changes function of pinning button and edits the text inside
 function filterFavorites(obj, shows) {
-    let show = obj.name
-    let button = document.getElementById(show)
-    let found = false
-    let foundId
+    let button = document.getElementById(obj.name)
+    let foundId = 0
     for (let i = 0; i < shows.length; i++) {
         if (shows[i].showId == obj.showId) {
-            found = true
             foundId = shows[i].id
             break
         }
     }
-    if (found === true) {
+    if (foundId) {
         removeFavorites(foundId)
         let show = document.getElementById(foundId)
         button.innerText = 'Pin to favorites'
@@ -179,7 +179,8 @@ function filterFavorites(obj, shows) {
     }
 }
 
-function addFavorites(obj) {
+// creates config obj to be used in updating info on the server
+function createPostConfig(obj) {
     const config = {
         method: 'POST',
         headers: {
@@ -188,19 +189,26 @@ function addFavorites(obj) {
         },
         body: JSON.stringify(obj)
     }
-
-    fetch(localURL, config).then(r => r.json()).then(data => pinFavorites(data))
+    return config
 }
 
+// adds new favorite show to the server and updates the favorites list on the DOM
+function addFavorites(obj) {
+    fetch(localURL, createPostConfig(obj)).then(r => r.json()).then(data => pinFavorites(data))
+}
+
+// removes favorite show from the server
 function removeFavorites(id) {
-    fetch(localURL + id, {method: 'DELETE'})
+    return fetch(localURL + id, {method: 'DELETE'})
 }
 
+// removes favorite show from the server and updates the favorites list on the DOM
 function unpinFromSide() {
     removeFavorites(this.parentNode.id)
-    this.parentNode.remove()
+    .then(data => this.parentNode.remove())
 }
 
+// searches through favorites list and edits the pin button text correctly on search result
 function changeButtonText(button, showId) {
     fetchFavorites().then(shows => {
         for (let i = 0; i < shows.length; i++) {
@@ -214,6 +222,7 @@ function changeButtonText(button, showId) {
     })
 }
 
+// creates a back button after clicking a show for additional info
 function createBackButton() {
     let cardInfo = document.querySelector('.text')
     const button = document.createElement('button')
@@ -222,21 +231,25 @@ function createBackButton() {
     cardInfo.appendChild(button)
 }
 
+// returns the page to the previous search result
 function previousSearchResult() {
     showInfo.innerHTML = ''
     fetchShowSearchResults(previousSearch)
     .then(data => data.forEach(show => showInfo.appendChild(searchResults(show.show))))
 }
 
+// fetches and returns all comment data from the server
 function fetchComments() {
     return fetch(commentURL).then(r => r.json())
 }
 
+// fetches and returns all user data from the server
 function fetchUser() {
     const userURL = 'http://localhost:3000/users'
     return fetch(userURL).then(r => r.json())
 }
 
+// creates and returns comment section with existing comments
 function commentDetails(showId) {
     const commentSection = document.createElement('div')
     const commentHeading = document.createElement('h2')
@@ -264,6 +277,7 @@ function commentDetails(showId) {
     return commentSection
 }
 
+// adds existing comments from server to comment section for specific show
 function addCommentsToPage(list, showId) {
     fetchComments().then(comments => comments.forEach(comment => {
         if (comment.showId === showId) {
@@ -282,6 +296,7 @@ function addCommentsToPage(list, showId) {
     }))
 }
 
+// creates comment obj to send to server using what user inputs
 function handleNewComment(e) {
     const obj = {
             showId: parseInt(this.firstChild.classList.value),
@@ -294,16 +309,9 @@ function handleNewComment(e) {
     e.target.reset()
 }
 
-function postNewComment(comment) {
-    const config = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify(comment)
-    }
-    fetch(commentURL, config).then(r => r.json()).then(data => {
+// sends comment obj to local server and updates DOM
+function postNewComment(obj) {
+    fetch(commentURL, createPostConfig(obj)).then(r => r.json()).then(data => {
         const list = document.querySelector('#comment-list')
         addCommentsToPage(list, data.showId)
     })
