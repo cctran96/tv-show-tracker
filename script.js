@@ -167,7 +167,7 @@ function catchFavoritesError() {
     const pinnedShows = document.querySelector('#tv-shows')
     const h4 = document.createElement('h4')
     h4.innerText = 'Unable to load favorites. Please check the server and refresh the page.'
-    pinnedShows.replaceWith(h4, pinnedShows)
+    pinnedShows.replaceWith(h4)
 }
 
 // 
