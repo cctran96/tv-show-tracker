@@ -33,13 +33,19 @@ body {
     overflow-y: scroll;
     flex-grow: 0;
     flex-shrink: 0;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+#sidebar::-webkit-scrollbar {
+    display: none;
 }
 
 #pin {
     margin-left: 10px;
     color: whitesmoke;
     text-align: center;
-    padding-top: 30%;
+    padding-top: 10%;
 }
 
 #search {
@@ -142,4 +148,8 @@ li button {
 
 #comments form {
     margin-left: 40px;
+}
+
+#footer {
+    padding-left: 20px;
 }
